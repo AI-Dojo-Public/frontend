@@ -61,7 +61,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class ScenariosComponent implements AfterViewInit {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA); 
+  dataSource = new MatTableDataSource(ELEMENT_DATA);
   expandedElement: PeriodicElement | null = null;
   private _liveAnnouncer = inject(LiveAnnouncer);
 
@@ -92,14 +92,14 @@ export class ScenariosComponent implements AfterViewInit {
       symbol: `E${this.dataSource.data.length + 1}`,
       description: `Description for Element ${this.dataSource.data.length + 1}`,
     };
-  
+
     const updatedData = [...this.dataSource.data, newElement];
-    this.dataSource.data = updatedData; 
+    this.dataSource.data = updatedData;
   }
 
   removeData() {
-    const updatedData = this.dataSource.data.slice(0, -1); 
-    this.dataSource.data = updatedData; 
+    const updatedData = this.dataSource.data.slice(0, -1);
+    this.dataSource.data = updatedData;
   }
 
   applyFilter(event: Event) {

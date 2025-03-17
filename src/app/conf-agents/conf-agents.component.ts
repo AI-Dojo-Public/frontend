@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'app-conf-agents',
@@ -8,5 +9,4 @@ import { Component } from '@angular/core';
   styleUrl: './conf-agents.component.scss'
 })
 export class ConfAgentsComponent {
-
 }

@@ -1,0 +1,30 @@
+<div [formGroup]="form">
+  @switch (parameter.controlType) {
+    @case ('textbox') {
+      <mat-form-field floatLabel="auto">
+        <mat-label>{{ parameter.label }}</mat-label>
+        <input matInput [formControlName]="parameter.key" [id]="parameter.key">
+      </mat-form-field>
+    }
+    @case ('dropdown') {
+      <mat-form-field floatLabel="auto">
+        <mat-label>{{ parameter.label }}</mat-label>
+        <mat-select [id]="parameter.key" [formControlName]="parameter.key">
+          @for (opt of parameter.options; track opt) {
+            <mat-option [value]="opt.key">{{ opt.value }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+    @case ('multi-select') {
+      <mat-form-field floatLabel="auto">
+        <mat-label>{{ parameter.label }}</mat-label>
+        <mat-select [formControlName]="parameter.key" multiple>
+          @for (opt of parameter.options; track opt) {
+            <mat-option [value]="opt.key">{{ opt.value }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+  }
+</div>

@@ -152,7 +152,7 @@ $sentinel-theme: mat.define-theme((
     use-system-variables: true
   ),
   density: (
-    scale: -2
+    scale: -1
   )
 ));
 
@@ -252,4 +252,7 @@ body {
   margin: 0;
 }
 
-  
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

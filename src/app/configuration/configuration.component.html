@@ -18,13 +18,21 @@
       </button>
       <button
         mat-stroked-button
-        class="connected-button right"
+        class="connected-button middle-general"
         [routerLink]="'/configuration/general'"
         routerLinkActive="active"
       >
         General
       </button>
+      <button
+        mat-stroked-button
+        class="connected-button right"
+        [routerLink]="'/configuration/environments'"
+        routerLinkActive="active"
+      >
+        Environments
+      </button>
     </div>
-    
+
     <router-outlet></router-outlet>
   </div>

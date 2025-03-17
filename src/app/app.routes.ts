@@ -35,6 +35,11 @@ export const routes: Routes = [
                 path: 'general',
                 loadComponent: () => import('./general/general.component').then(m => m.GeneralComponent),
                 title: 'General'
+            },
+            {
+              path: 'environments',
+              loadComponent: () => import('./environments/environments.component').then(m => m.EnvironmentsComponent),
+              title: 'Environments'
             }
         ]
     },

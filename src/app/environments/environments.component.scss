@@ -1,0 +1,119 @@
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-m);
+  margin-top: var(--spacing-s);
+}
+
+.table-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  max-width: 90%;
+  overflow-x: auto;
+}
+
+.centered-table {
+  width: 50%;
+  //max-width: 1200px;
+  margin: auto;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.filter {
+
+  display: flex;
+  justify-items: center;
+  width: 50%;
+  margin: 0 auto;
+  color: white;
+
+
+  ::ng-deep .mdc-text-field {
+    border-color: var(--color-text);
+  }
+
+  ::ng-deep .mdc-text-field:hover {
+    border-color: var(--color-highlight); /* Change border color on hover */
+  }
+
+  /* Target the input text color */
+  ::ng-deep .mdc-text-field__input {
+    color: #FFFFFF !important; /* Text color inside input field */
+  }
+
+  /* Target the floating label */
+  ::ng-deep .mdc-floating-label {
+    color: #FFFFFF !important; /* Label text color */
+  }
+
+  /* Focus state outline */
+  ::ng-deep .mdc-notched-outline {
+    border-color: #7289DA !important; /* Outline color */
+  }
+
+  /* Focus state outline when input is active */
+  ::ng-deep .mdc-notched-outline--notched {
+    border-color: #5A9AD6 !important; /* Active outline color */
+  }
+}
+
+th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: #fafafa;
+}
+
+table {
+  width: 100%;
+}
+
+tr.detail-row {
+  height: 0;
+}
+
+tr.environment-row {
+  cursor: pointer;
+}
+
+tr.environment-row:not(.expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.environment-row:not(.expanded-row):active {
+  background: #efefef;
+}
+
+.environment-row td {
+  border-bottom-width: 0;
+}
+
+.environment-detail-wrapper {
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 0fr;
+  grid-template-columns: 100%;
+  transition: grid-template-rows 225ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.environment-detail-wrapper-expanded {
+  grid-template-rows: 1fr;
+}
+
+.toggle-button {
+  transition: transform 225ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toggle-button-expanded {
+  transform: rotate(180deg);
+}
+.text-center {
+  text-align: center;
+}
+

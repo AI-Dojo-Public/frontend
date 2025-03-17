@@ -1,0 +1,11 @@
+<div>
+  <form [formGroup]="form">
+
+    @for (parameter of parameters; track parameter) {
+      <div class="form-row">
+        <app-parameter [parameter]="parameter" [form]="form"></app-parameter>
+      </div>
+    }
+
+  </form>
+</div>
