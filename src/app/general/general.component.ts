@@ -14,6 +14,7 @@ import {ParametrizationService} from "../parametrization-form/services/parametri
 import {ParametrizationFormComponent} from "../parametrization-form/parametrization-form.component";
 import {ParameterBase} from "../parametrization-form/parametrization-form.interfaces";
 import {MaterialModule} from "../abstraction/material-module/material.module";
+import {ScenarioService} from "../abstraction/scenario.service";
 
 
 @Component({
@@ -41,6 +42,7 @@ export class GeneralComponent {
 
   constructor(
     private environmentService: EnvironmentService,
+    private scenarioService: ScenarioService,
     private parametrizationService: ParametrizationService,
     private fb: FormBuilder,
     private service: ParametrizationService
@@ -56,7 +58,7 @@ export class GeneralComponent {
   }
 
   ngOnInit(): void {
-    this.availableConfigurations$ = this.environmentService.listConfigurations().pipe(
+    this.availableConfigurations$ = this.scenarioService.listScenarios().pipe(
       map(configs => configs.available_configurations)
     );
 
@@ -69,7 +71,7 @@ export class GeneralComponent {
 
 
   fetchAndParseConfiguration(selectedValue: string) {
-    this.environmentService.getConfiguration(selectedValue).subscribe(response => {
+    this.scenarioService.getScenario(selectedValue).subscribe(response => {
       this.parameters$ = this.parametrizationService.parseConfiguration(response.configuration_json);
       console.log(this.parameters$)
     });

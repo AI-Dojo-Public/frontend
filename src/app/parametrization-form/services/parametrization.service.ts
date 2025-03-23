@@ -85,7 +85,7 @@ export class ParametrizationService {
             controlType: controlType,
             options: param.options.map(option => ({
               key: option.parameter_id,
-              value: option.value
+              value: option.parameter_id
             }))
           });
         } else {

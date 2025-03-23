@@ -1,88 +1,94 @@
+/* Expanded row handling */
 .detail-row {
-  &.collapsed {
-    display: none;
-  }
+  display: none;
 }
 
-.element-detail {
+.detail-row.expanded {
+  display: table-row;
+}
+
+.scenario-detail-wrapper {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  gap: 8px;
   padding: 16px;
   background: #f5f5f5;
   border-top: 1px solid #e0e0e0;
 }
 
-.mat-mdc-form-field {
-  font-size: 14px;
-  width: 100%;
+.detail-row.expanded .scenario-detail-wrapper {
+  display: block;
 }
 
-.table {
-  margin-bottom: var(--spacing-xl);
-  margin-right: var(--spacing-xl);
-  margin-left: var(--spacing-xl);
-  margin-top: var(--spacing-m);
-
-  .mat-table {
-    background-color: #6ac1d7;
-    color: black;
-  }
+.scenario-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 8px;
 }
 
-.button-container {
+/* Filter styling */
+.filter-container {
   display: flex;
   justify-content: center;
-  gap: var(--spacing-m);
-  margin-top: var(--spacing-s);
-}
-
-.mat-mdc-form-field {
-  font-size: 18px;
-  width: 100%;
-
-}
-
-.mdc-notched-outline:hover {
-  color: white !important;
-  border-color: white !important;
+  margin-bottom: 16px;
 }
 
 .filter {
-
-
-  display: flex;
-  justify-items: center;
   width: 50%;
+  max-width: 400px;
+}
+
+.mat-mdc-form-field {
+  font-size: 16px;
+  width: 100%;
+}
+
+/* Table layout */
+.table-container {
   margin: 0 auto;
-  color: white;
+  max-width: 90%;
+  overflow-x: auto;
+}
 
+.centered-table {
+  width: 100%;
+  color: black;
+}
 
-  ::ng-deep .mdc-text-field {
-    border-color: var(--color-text);
-  }
+/* Row styling */
+.scenario-row {
+  cursor: pointer;
+}
 
-  ::ng-deep .mdc-text-field:hover {
-    border-color: var(--color-highlight); /* Change border color on hover */
-  }
+.expanded-row {
+  background-color: #e3f2fd;
+}
 
-  /* Target the input text color */
-  ::ng-deep .mdc-text-field__input {
-    color: #FFFFFF !important; /* Text color inside input field */
-  }
+/* Toggle button animation */
+.toggle-button {
+  transition: transform 0.2s;
+}
 
-  /* Target the floating label */
-  ::ng-deep .mdc-floating-label {
-    color: #FFFFFF !important; /* Label text color */
-  }
+.toggle-button-expanded {
+  transform: rotate(180deg);
+}
 
-  /* Focus state outline */
-  ::ng-deep .mdc-notched-outline {
-    border-color: #7289DA !important; /* Outline color */
-  }
+.scenario-image-button {
+  display: flex;
+  justify-content: center; // Centers the button horizontally
+  margin-top: 10px; // Optional spacing
+}
 
-  /* Focus state outline when input is active */
-  ::ng-deep .mdc-notched-outline--notched {
-    border-color: #5A9AD6 !important; /* Active outline color */
-  }
+image-dialog-auto-size .mat-dialog-content {
+  width: auto; // Width is automatically set to the image size
+  height: auto; // Height is automatically set to the image size
+  max-width: 90vw;  // Max width to 90% of the viewport
+  max-height: 90vh; // Max height to 90% of the viewport
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  //padding: 1rem; // Add some padding to the dialog
+  background: rgba(0, 0, 0, 0.8); // Optional: dark background effect
 }

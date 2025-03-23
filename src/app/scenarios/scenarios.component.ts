@@ -2,38 +2,18 @@ import { Component, ViewChild, AfterViewInit, inject } from '@angular/core';
 import { MatTable, MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import {MatSort, Sort, MatSortModule} from '@angular/material/sort';
-import {LiveAnnouncer} from '@angular/cdk/a11y';
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-  description: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {
-    position: 1,
-    name: 'Hydrogen',
-    weight: 1.0079,
-    symbol: 'H',
-    description: 'Lightest element.',
-  },
-  {
-    position: 2,
-    name: 'Helium',
-    weight: 4.0026,
-    symbol: 'He',
-    description: 'Second lightest element.',
-  },
-];
+import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { IScenario, ScenarioService } from "../abstraction/scenario.service";
+import { catchError, forkJoin, map, Observable, of, switchMap } from "rxjs";
+import {DialogImageComponent} from "./components/dialog-image/dialog-image.component";
+import {MatDialog} from "@angular/material/dialog";
+import {MarkdownComponent} from "ngx-markdown";
 
 @Component({
   selector: 'app-scenarios',
@@ -47,6 +27,8 @@ const ELEMENT_DATA: PeriodicElement[] = [
     MatInputModule,
     MatPaginatorModule,
     MatSortModule,
+    NgOptimizedImage,
+    MarkdownComponent,
   ],
   templateUrl: './scenarios.component.html',
   styleUrls: ['./scenarios.component.scss'],
@@ -59,47 +41,34 @@ const ELEMENT_DATA: PeriodicElement[] = [
   ],
 })
 export class ScenariosComponent implements AfterViewInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  displayedColumns: string[] = ['name'];
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
-  expandedElement: PeriodicElement | null = null;
-  private _liveAnnouncer = inject(LiveAnnouncer);
 
-  @ViewChild(MatTable) table!: MatTable<PeriodicElement>;
+  dataSource = new MatTableDataSource<ScenarioData>([]);
+  private _liveAnnouncer = inject(LiveAnnouncer);
+  private scenarioService = inject(ScenarioService);
+  readonly dialog = inject(MatDialog);
+  expandedScenario: ScenarioData | null = null;
+
+  @ViewChild(MatTable) table!: MatTable<ScenarioData>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  ngOnInit(): void {
+    this.loadScenarios();
+  }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-
-    this.dataSource.filterPredicate = (data: PeriodicElement, filter: string) => {
-      const dataStr = Object.values(data).join(' ').toLowerCase();
-      return dataStr.includes(filter.trim().toLowerCase());
-    };
-
     this.dataSource.sort = this.sort;
   }
 
-  toggleExpand(element: PeriodicElement) {
-    this.expandedElement = this.expandedElement === element ? null : element;
+  isExpanded(scenario: ScenarioData) {
+    return this.expandedScenario === scenario;
   }
 
-  addData() {
-    const newElement: PeriodicElement = {
-      position: this.dataSource.data.length + 1,
-      name: `Element ${this.dataSource.data.length + 1}`,
-      weight: parseFloat((Math.random() * 10).toFixed(2)),
-      symbol: `E${this.dataSource.data.length + 1}`,
-      description: `Description for Element ${this.dataSource.data.length + 1}`,
-    };
-
-    const updatedData = [...this.dataSource.data, newElement];
-    this.dataSource.data = updatedData;
-  }
-
-  removeData() {
-    const updatedData = this.dataSource.data.slice(0, -1);
-    this.dataSource.data = updatedData;
+  toggleExpand(scenario: ScenarioData) {
+    this.expandedScenario = this.isExpanded(scenario) ? null : scenario;
   }
 
   applyFilter(event: Event) {
@@ -108,14 +77,52 @@ export class ScenariosComponent implements AfterViewInit {
   }
 
   announceSortChange(sortState: Sort) {
-    // This example uses English messages. If your application supports
-    // multiple language, you would internationalize these strings.
-    // Furthermore, you can customize the message to add additional
-    // details about the values being sorted.
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
   }
+
+  loadScenarios(): void {
+    this.scenarioService.listScenarios()
+      .pipe(
+        switchMap(response => {
+          const scenarioRequests: Observable<ScenarioData>[] = response.available_configurations.map(name =>
+            forkJoin({
+              description: (this.scenarioService.getScenario(name).pipe(
+                map(scenario => scenario.description),
+                catchError(() => of(null)))),
+              imageUrl: this.scenarioService.getScenarioImage(name).pipe(catchError(() => of(null)))
+            }).pipe(
+              map(({description, imageUrl}) => ({name, description, imageUrl}))
+            )
+          );
+          return scenarioRequests.length ? forkJoin(scenarioRequests) : of([]);
+        })
+      )
+      .subscribe({
+        next: (scenarios: ScenarioData[]) => this.dataSource.data = scenarios,
+        error: err => console.error('Error loading scenarios:', err)
+      });
+  }
+
+  openImageDialog(imageUrl: string, enterAnimationDuration: string, exitAnimationDuration: string) {
+    this.dialog.open(DialogImageComponent, {
+      data: { imageUrl },
+      width: 'auto', // Let the width be determined by the image size
+      height: 'auto', // Let the height be determined by the image size
+      maxWidth: '90vw', // Set max width to 90% of the viewport
+      maxHeight: '90vh', // Set max height to 90% of the viewport
+      enterAnimationDuration,
+      exitAnimationDuration,
+      panelClass: 'image-dialog-auto-size' // Apply custom class for styling
+    });
+  }
+}
+
+interface ScenarioData {
+  name: string;
+  description: string | null;
+  imageUrl: string | null;
 }

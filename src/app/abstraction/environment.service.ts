@@ -32,14 +32,6 @@ export interface IEnvironmentOut {
   agent_manager_port: number;
 }
 
-export interface IAvailableConfigurations {
-  available_configurations: string[];
-}
-
-export interface IConfigurationJson {
-  configuration_json: string
-}
-
 interface IHTTPValidationError {
   detail: IValidationError[];
 }
@@ -60,6 +52,7 @@ export class EnvironmentService {
 
   constructor() { }
 
+
   createEnvironment(environment: IEnvironment): Observable<IActionResponse> {
     return this.http.post<IActionResponse>(`${this.apiUrl}create/`, environment);
   }
@@ -68,7 +61,7 @@ export class EnvironmentService {
     return this.http.post<IActionResponse>(`${this.apiUrl}init/`, null, { params: { "id": id } });
   }
 
-  configureEnvironment(id: string, parametrization: string): Observable<IActionResponse> {
+  configureEnvironment(id: string, parametrization: Object): Observable<IActionResponse> {
     return this.http.post<IActionResponse>(`${this.apiUrl}configure/`, { parameters: parametrization}, { params: { "id": id} });
   }
 
@@ -99,13 +92,4 @@ export class EnvironmentService {
   getEnvironment(id: string): Observable<IEnvironmentOut> {
     return this.http.get<IEnvironmentOut>(`${this.apiUrl}get/`, { params: { "id": id } });
   }
-
-  listConfigurations(): Observable<IAvailableConfigurations> {
-    return this.http.get<IAvailableConfigurations>(`${this.apiUrl}configuration/list/`);
-  }
-
-  getConfiguration(name: string): Observable<IConfigurationJson> {
-    return this.http.get<IConfigurationJson>(`${this.apiUrl}configuration/get/`, { params: { 'file_name': name } });
-  }
 }
-

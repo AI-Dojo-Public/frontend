@@ -31,7 +31,7 @@ import { map, Observable } from "rxjs";
     ]),
   ],
 })
-export class EnvironmentsComponent {
+export class EnvironmentsComponent implements AfterViewInit{
   displayedColumns: string[] = ['id', 'state'];
   columnsToDisplayWithExpand = [...this.displayedColumns, 'actions', 'expand'];
   dataSource = new MatTableDataSource<IEnvironmentOut>();
