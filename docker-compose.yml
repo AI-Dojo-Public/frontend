@@ -1,0 +1,9 @@
+services:
+  ai_dojo:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai_dojo
+    ports:
+      - "8080:80"

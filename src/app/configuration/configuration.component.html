@@ -1,0 +1,30 @@
+<div class="configuration-main">
+    <div class="example-button-row">
+      <button
+        mat-stroked-button
+        [routerLink]="'/configuration/scenarios'"
+        class="connected-button left"
+        routerLinkActive="active"
+      >
+        Scenarios
+      </button>
+      <button
+        mat-stroked-button
+        class="connected-button middle"
+        [routerLink]="'/configuration/agents'"
+        routerLinkActive="active"
+      >
+        Agents
+      </button>
+      <button
+        mat-stroked-button
+        class="connected-button right"
+        [routerLink]="'/configuration/general'"
+        routerLinkActive="active"
+      >
+        General
+      </button>
+    </div>
+    
+    <router-outlet></router-outlet>
+  </div>

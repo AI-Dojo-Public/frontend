@@ -1,0 +1,228 @@
+mat-toolbar {
+  background-image: linear-gradient(
+    180deg,
+    hsl(228deg 19% 5%) 0%,
+    hsl(217deg 23% 9%) 29%,
+    hsl(215deg 24% 11%) 43%,
+    hsl(214deg 24% 13%) 57%,
+    hsl(213deg 24% 15%) 71%,
+    hsl(213deg 24% 16%) 100%
+  );
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-xs);
+  border-bottom: 2px solid var(--color-primary);
+
+  .navbar-left-content {
+    color: white;
+    display: flex;
+    gap: 0.5rem;
+    margin-left: var(--spacing-xs);
+    
+    
+    mat-icon {
+      font-size: var(--font-size-l); 
+      color: var(--color-text); 
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  .navbar-icon-container {
+    display: flex;
+    align-items: center;
+
+    .navbar-text-wrapper {
+      overflow: clip;
+    }
+    .navbar-text-between {
+      transform: translateX(-100%);
+      padding-top: 0.3rem;
+      padding-left: 0.3rem;
+    }
+  
+    &.highlight .navbar-text-between {
+      animation: slide-out 1s forwards 0.5s; 
+      color: white;
+    }
+  
+    &.highlight mat-icon {
+      animation: pulse 1s ease; 
+      color: var(--color-highlight); 
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.5); 
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slide-out {
+    0% {
+      transform: translateX(-150%); /* Start hidden behind the icon */
+    }
+    100% {
+      transform: translateX(0); /* Slide out to the right */
+    }
+  }
+  
+
+  .navbar-right-content {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+
+    .navbar-options-button.active {
+      color: var(--color-highlight);
+    }
+
+    button[mat-icon-button] {
+      padding: 0;
+      margin-right: var(--spacing-xs);
+      color: var(--color-text); 
+
+      // &:focus {
+      //   color: var(--color-highlight)
+      // }
+    }
+
+    mat-icon {
+      font-size: var(--font-size-l); 
+      height: var(--font-size-l);
+      width: var(--font-size-l);
+      transform: rotate(180deg);
+
+      &:hover {
+        color: var(--color-highlight)
+      }
+    }
+  }
+
+  .navbar-buttons-container {
+    position: absolute; 
+    left: 50%; 
+    transform: translateX(-50%); 
+
+    button[mat-stroked-button] {
+      width: 100%;
+      height: 100%;
+      font-size: var(--font-size-m);
+      border-radius: var(--spacing-s);
+      border-width: var(--border-width-m);
+      color: var(--color-text);
+      transition: color 0.3s ease;
+
+
+      &:focus {
+        color: var(--color-highlight)
+
+      }
+
+      &:hover {
+        color: var(--color-highlight);
+      }
+    }
+  }
+}
+
+.navbar-dropdown-overlay {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 1000;
+}
+
+.navbar-dropdown-menu {
+  display: flex;
+  gap: var(--spacing-s);
+  background-color: var(--color-secondary);
+  padding: var(--spacing-xs);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  margin-top: var(--spacing-xl);
+  border-radius: var(--spacing-s);
+
+  button {
+    flex: 1;
+    font-size: var(--font-size-s);
+    padding: var(--spacing-xs);
+    background: transparent;
+    border: none;
+    color: var(--color-text);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-highlight);
+      background-color: #4e5f74;
+      border-radius: var(--spacing-s);
+      transition: background-color 0.3s ease;
+    }
+  }
+}
+
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  background-image: linear-gradient(
+    0deg,
+    hsl(228deg 19% 5%) 0%,
+    hsl(217deg 23% 9%) 29%,
+    hsl(215deg 24% 11%) 43%,
+    hsl(214deg 24% 13%) 57%,
+    hsl(213deg 24% 15%) 71%,
+    hsl(213deg 24% 16%) 100%
+  );
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  color: var(--color-text);
+  padding: var(--spacing-xs);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000; 
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #4e5f74;
+        color: var(--color-highlight)
+      }
+
+      &:active {
+        color: var(--color-highlight);
+      }
+      
+    }
+  }
+}
+
+.right-dropdown-overlay {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: fixed;
+  z-index: 1000;
+}
+
+

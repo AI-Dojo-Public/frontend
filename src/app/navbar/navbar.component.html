@@ -1,0 +1,63 @@
+<mat-toolbar>
+  <div class="navbar-left-content">
+
+    <div class="navbar-icon-container" [ngClass]="{ 'highlight': highlightCryton }">
+      <mat-icon>smart_toy</mat-icon>
+      <div class="navbar-text-wrapper">
+        <div class="navbar-text-between">
+          <span class="navbar-text" *ngIf="highlightCryton">Cryton</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar-icon-container" [ngClass]="{ 'highlight': highlightAgents }">
+      <mat-icon>groups_2</mat-icon>
+      <div class="navbar-text-wrapper">
+        <div class="navbar-text-between">
+          <span class="navbar-text" *ngIf="highlightAgents">Agents</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar-icon-container" [ngClass]="{ 'highlight': highlightKibana }">
+      <mat-icon>bar_chart</mat-icon>
+      <div class="navbar-text-wrapper">
+        <div class ="navbar-text-between">
+          <span class="navbar-text" *ngIf="highlightKibana">Kibana</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="navbar-buttons-container">
+    <button mat-stroked-button (click)="toggleDropdown($event)" class="navbar-button">
+      AI-Dojo
+    </button>
+  </div>
+  <div class="navbar-right-content">
+    <button mat-icon-button aria-label="Menu icon button" class="navbar-options-button" (click)="toggleMenu()">
+      <mat-icon>lists</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+@if (isChoosingService) {
+  <div class="navbar-dropdown-overlay" (click)="closeDropdown()">
+    <div class="navbar-dropdown-menu" (click)="$event.stopPropagation()">
+      <button [routerLink]="'/cryton'" (click)="closeDropdown()">Cryton</button>
+      <button [routerLink]="'/textual-agents'" (click)="closeDropdown()">Textual Agents</button>
+      <button [routerLink]="'/kibana'" (click)="closeDropdown()">Kibana</button>
+    </div>
+  </div>
+}
+
+@if (menuOpen) {
+  <div class="right-dropdown-overlay" (click)="closeMenu()">
+    <div class="dropdown-menu">
+      <ul>
+        <li [routerLink]="'/configuration'">Configuration</li>
+        <li>Execution</li>
+        <li>Analysis</li>
+      </ul>
+    </div>
+  </div>
+}

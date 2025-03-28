@@ -1,0 +1,255 @@
+@use '@sentinel/components/theming' as sentinel-components ;
+@use '@sentinel/components/typography' as sentinel-typography ;
+@use '@angular/material' as mat;
+@use 'sass:map';
+@import url("https://assets.soracom.io/fonts/aeonik/Aeonik.css");
+
+
+$sentinel-base-font: 'Aeonik', sans-serif;
+
+$sentinel-palettes: (
+  primary: (
+    0: #000000,
+    10: #00006E,
+    20: #0000AC,
+    25: #0000CD,
+    30: #1318E1,
+    35: #272FEB,
+    40: #3741F7,
+    50: #5A64FF,
+    60: #7C84FF,
+    70: #9DA3FF,
+    80: #BFC2FF,
+    90: #E0E0FF,
+    95: #F1EFFF,
+    98: #FBF8FF,
+    99: #FFFBFF,
+    100: #ffffff,
+  ),
+  secondary: (
+    0: #000000,
+    10: #0A0D30,
+    20: #2B2D51,
+    25: #36385C,
+    30: #414469,
+    35: #4D4F75,
+    40: #595B82,
+    50: #72749C,
+    60: #8B8DB7,
+    70: #A6A8D3,
+    80: #C2C3EF,
+    90: #E0E0FF,
+    95: #F1EFFF,
+    98: #FBF8FF,
+    99: #FFFBFF,
+    100: #ffffff,
+  ),
+  tertiary: (
+    0: #000000,
+    10: #261900,
+    20: #402d00,
+    25: #4e3800,
+    30: #5c4200,
+    35: #6b4d00,
+    40: #7a5900,
+    50: #997000,
+    60: #b98900,
+    70: #dba200,
+    80: #fabd29,
+    90: #ffdea2,
+    95: #ffefd6,
+    98: #fff8f2,
+    99: #fffbff,
+    100: #ffffff,
+  ),
+  neutral: (
+    0: #000000,
+    4: #111114,
+    6: #1B1B1F,
+    10: #1B1B1F,
+    12: #262529,
+    17: #262529,
+    20: #303034,
+    22: #303034,
+    24: #3C3B3F,
+    25: #3C3B3F,
+    30: #47464A,
+    35: #535256,
+    40: #5F5E62,
+    50: #78767A,
+    60: #929094,
+    70: #ADAAAF,
+    80: #C8C5CA,
+    87: #E5E1E6,
+    90: #E5E1E6,
+    92: #F3EFF4,
+    94: #F3EFF4,
+    95: #F3EFF4,
+    96: #FCF8FD,
+    98: #FCF8FD,
+    99: #ffffff,
+    100: #ffffff,
+  ),
+  neutral-variant: (
+    0: #000000,
+    10: #1b1b23,
+    20: #303038,
+    25: #3b3b43,
+    30: #46464f,
+    35: #52515b,
+    40: #5e5d67,
+    50: #777680,
+    60: #91909a,
+    70: #acaab4,
+    80: #c7c5d0,
+    90: #e4e1ec,
+    95: #f2effa,
+    98: #fbf8ff,
+    99: #fbfcff,
+    100: #ffffff,
+  ),
+  error: (
+    0: #000000,
+    10: #410002,
+    20: #690005,
+    25: #7e0007,
+    30: #93000a,
+    35: #a80710,
+    40: #ba1a1a,
+    50: #de3730,
+    60: #ff5449,
+    70: #ff897d,
+    80: #ffb4ab,
+    90: #ffdad6,
+    95: #ffedea,
+    98: #fff8f7,
+    99: #fffbff,
+    100: #ffffff,
+  ),
+);
+
+$_rest: (
+  secondary: map.get($sentinel-palettes, secondary),
+  neutral: map.get($sentinel-palettes, neutral),
+  neutral-variant: map.get($sentinel-palettes,  neutral-variant),
+  error: map.get($sentinel-palettes, error),
+);
+$_primary: map.merge(map.get($sentinel-palettes, primary), $_rest);
+$_tertiary: map.merge(map.get($sentinel-palettes, tertiary), $_rest);
+
+$sentinel-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: $_primary,
+    tertiary: $_tertiary,
+  ),
+  typography: (
+    plain-family: $sentinel-base-font,
+    brand-family: $sentinel-base-font,
+    bold-weight: 700,
+    medium-weight: 500,
+    regular-weight: 400,
+    use-system-variables: true
+  ),
+  density: (
+    scale: -2
+  )
+));
+
+
+:root {
+
+  @include mat.core();
+  @include mat.all-component-themes($sentinel-theme);
+  @include mat.all-component-typographies($sentinel-theme);
+  @include sentinel-components.all-component-themes($sentinel-theme);
+  @include sentinel-typography.all-component-typographies($sentinel-theme);
+
+  --sys-display-large-size: 34px;
+    --sys-display-large-line-height: 40px;
+    --sys-display-large: 500 var(--sys-display-large-size) / var(--sys-display-large-line-height) #{$sentinel-base-font};
+
+    --sys-display-medium-size: 24px;
+    --sys-display-medium-line-height: 32px;
+    --sys-display-medium: 400 var(--sys-display-medium-size) / var(--sys-display-medium-line-height) #{$sentinel-base-font};
+
+    --sys-display-small-size: 20px;
+    --sys-display-small-line-height: 32px;
+    --sys-display-small: 400 var(--sys-display-small-size) / var(--sys-display-small-line-height) #{$sentinel-base-font};
+
+    --sys-headline-large-size: 16px;
+    --sys-headline-large-line-height: 28px;
+    --sys-headline-large: 400 var(--sys-headline-large-size) / var(--sys-headline-large-line-height) #{$sentinel-base-font};
+
+    --sys-headline-medium-size: 14px;
+    --sys-headline-medium-line-height: 24px;
+    --sys-headline-medium: 400 var(--sys-headline-medium-size) / var(--sys-headline-medium-line-height) #{$sentinel-base-font};
+
+    --sys-headline-small-size: 13px;
+    --sys-headline-small-line-height: 22px;
+    --sys-headline-small: 400 var(--sys-headline-small-size) / var(--sys-headline-small-line-height) #{$sentinel-base-font};
+
+    --sys-body-large-size: 14px;
+    --sys-body-large-line-height: 20px;
+    --sys-body-large-tracking: 0;
+    --sys-body-large: 400 var(--sys-body-large-size) / var(--sys-body-large-line-height) #{$sentinel-base-font};
+
+  font-family: 'Aeonik', sans-serif;
+  font-size: var(--font-size-m);
+  line-height: var(--line-height);
+  font-weight: var(--font-weight-normal);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --font-weight-thin: 200;
+  --font-weight-normal: 400;
+  --font-weight-bold: 600;
+  --line-height: 1.5;
+
+  --font-size-xs: 0.75rem;
+  --font-size-s: 1rem;
+  --font-size-m: 1.5rem;
+  --font-size-l: 2rem;
+  --font-size-xl: 3rem;
+
+  --border-radius: 0;
+  --border-width-s: 1px;
+  --border-width-m: 2px;
+
+  --spacing-xs: 0.5rem;
+  --spacing-s: 1rem;
+  --spacing-m: 2rem;
+  --spacing-l: 3rem;
+  --spacing-xl: 4rem;
+
+  --color-primary: #0B0C10;
+  --color-secondary: #1F2833;
+  --color-highlight: #66FCF1;
+  --color-outline: #45A29E;
+  --color-text: #C5C6C7;
+
+  --color-highlights-cyan: #069292;
+  --color-highlights-lightgreen: #85f185;
+  --color-highlights-yellow: #86860e;
+  --color-highlights-red: #e24a4a;
+  --color-highlights-gray: #6b6b6b;
+  --color-highlights-lightgray: #d3d3d3;
+  --color-highlights-orange: #ebbe6a;
+
+
+}
+
+body {
+  margin: 0;
+  min-width: 15rem;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+  
