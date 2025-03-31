@@ -1,5 +1,3 @@
-@use '@sentinel/components/theming' as sentinel-components ;
-@use '@sentinel/components/typography' as sentinel-typography ;
 @use '@angular/material' as mat;
 @use 'sass:map';
 @import url("https://assets.soracom.io/fonts/aeonik/Aeonik.css");
@@ -162,8 +160,6 @@ $sentinel-theme: mat.define-theme((
   @include mat.core();
   @include mat.all-component-themes($sentinel-theme);
   @include mat.all-component-typographies($sentinel-theme);
-  @include sentinel-components.all-component-themes($sentinel-theme);
-  @include sentinel-typography.all-component-typographies($sentinel-theme);
 
   --sys-display-large-size: 34px;
     --sys-display-large-line-height: 40px;
