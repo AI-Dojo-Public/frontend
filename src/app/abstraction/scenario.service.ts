@@ -35,25 +35,4 @@ export class ScenarioService {
         map((blob: Blob) => URL.createObjectURL(blob)) // Convert Blob to Object URL
       );
   }
-
-  // getScenarioImage(name: string): Observable<string | null> {
-  //   return this.http
-  //     .get(`${this.apiUrl}get/image/`, { params: { 'file_name': name }, responseType: 'blob' }) // Request image as Blob
-  //     .pipe(
-  //       switchMap((blob: Blob) => {
-  //         if (!blob.size) return of(null); // Handle empty responses
-  //
-  //         return new Observable<string>((observer) => {
-  //           const reader = new FileReader();
-  //           reader.readAsDataURL(blob); // Convert Blob to Base64
-  //           reader.onloadend = () => {
-  //             observer.next(reader.result as string); // Emit Base64 URL
-  //             observer.complete();
-  //           };
-  //           reader.onerror = () => observer.error('Failed to read image');
-  //         });
-  //       }),
-  //       catchError(() => of(null)) // Return null if any error occurs
-  //     );
-  // }
 }
