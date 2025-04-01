@@ -1,1 +1,82 @@
-<p>conf-agents works!</p>
+<div class="container">
+  <mat-card class="card">
+    <mat-card-title class="card-title">Add Agent</mat-card-title>
+    <mat-card-content class="content" [formGroup]="installForm">
+      <!-- Installation Method -->
+      <mat-form-field appearance="outline">
+        <mat-label>Installation Method</mat-label>
+        <mat-select formControlName="method">
+          <mat-option value="git">Git</mat-option>
+          <mat-option value="pypi">PyPI</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Git Credentials (only for 'git') -->
+      <div formGroupName="gitDetails" *ngIf="installForm.get('method')?.value === 'git'">
+        <mat-form-field appearance="outline">
+          <mat-label>Access Token</mat-label>
+          <input matInput formControlName="accessToken" placeholder="Enter Access Token" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" placeholder="Enter Username" />
+        </mat-form-field>
+      </div>
+
+      <!-- Path, URL or package -->
+      <ng-container *ngIf="installForm.get('method')?.value === 'git' || installForm.get('method')?.value === 'local'; else elseBlock">
+        <mat-form-field appearance="outline" class="input-field">
+          <mat-label>URL</mat-label>
+          <input matInput formControlName="pathOrUrl" placeholder="URL" />
+        </mat-form-field>
+      </ng-container>
+
+      <ng-template #elseBlock>
+        <mat-form-field appearance="outline" class="input-field">
+          <mat-label>Package name</mat-label>
+          <input matInput formControlName="pathOrUrl" placeholder="Package name" />
+        </mat-form-field>
+      </ng-template>
+
+      <!-- Install Button -->
+      <button mat-raised-button color="primary" (click)="installAgent()">Install</button>
+
+      <!-- Success/Error Message -->
+      <p *ngIf="message" class="message">{{ message }}</p>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div class="table-container">
+  <span class="table-header">Installed Agents</span> <!-- Add this header -->
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="module_name">
+      <th mat-header-cell *matHeaderCellDef> Module Name </th>
+      <td mat-cell *matCellDef="let agent"> {{ agent.module_name }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="package_name">
+      <th mat-header-cell *matHeaderCellDef> Package Name </th>
+      <td mat-cell *matCellDef="let agent"> {{ agent.package_name }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="package_version">
+      <th mat-header-cell *matHeaderCellDef> Version </th>
+      <td mat-cell *matCellDef="let agent"> {{ agent.package_version }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let agent">
+        <button mat-icon-button color="warn" (click)="removeAgent(agent.package_name)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

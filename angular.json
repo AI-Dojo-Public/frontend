@@ -36,6 +36,7 @@
               "src/styles.scss"
             ],
             "scripts": [
+              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js"
             ]
           },
           "configurations": {
