@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';import { HttpClient } from '@angular/common/http';
 import {catchError, map, Observable, of, switchMap} from 'rxjs';
+import {environment} from "../../environments/environment";
 
 export interface IAvailableScenarios {
   available_configurations: string[];
@@ -16,7 +17,7 @@ export interface IScenario {
 export class ScenarioService {
 
   private http: HttpClient = inject(HttpClient);
-  private apiUrl = 'http://127.0.0.1:8000/api/v1/scenario/';
+  private apiUrl = environment.restApiUrl + '/scenario/';
 
   constructor() {}
 

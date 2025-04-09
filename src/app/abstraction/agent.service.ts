@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, of } from 'rxjs';
+import {environment} from "../../environments/environment";
 
 export interface PackageEntry {
   module_name: string;
@@ -26,7 +27,7 @@ export interface AgentRemoval {
 })
 export class AgentService {
   private http: HttpClient = inject(HttpClient);
-  private apiUrl = 'http://127.0.0.1:8000/api/v1/agents/';
+  private apiUrl = environment.restApiUrl + '/agents/';
 
   constructor() {}
 
