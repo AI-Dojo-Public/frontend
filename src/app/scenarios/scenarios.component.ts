@@ -2,14 +2,14 @@ import { Component, ViewChild, AfterViewInit, inject } from '@angular/core';
 import { MatTable, MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { IScenario, ScenarioService } from "../abstraction/scenario.service";
+import { ScenarioService } from "../abstraction/scenario.service";
 import { catchError, forkJoin, map, Observable, of, switchMap } from "rxjs";
 import {DialogImageComponent} from "./components/dialog-image/dialog-image.component";
 import {MatDialog} from "@angular/material/dialog";
@@ -27,7 +27,6 @@ import {MarkdownComponent} from "ngx-markdown";
     MatInputModule,
     MatPaginatorModule,
     MatSortModule,
-    NgOptimizedImage,
     MarkdownComponent,
   ],
   templateUrl: './scenarios.component.html',
@@ -60,6 +59,12 @@ export class ScenariosComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+
+    this.dataSource.filterPredicate = (data: ScenarioData, filter: string) => {
+      const dataStr = Object.values(data).join(' ').toLowerCase();
+      return dataStr.includes(filter.trim().toLowerCase());
+    };
+
     this.dataSource.sort = this.sort;
   }
 

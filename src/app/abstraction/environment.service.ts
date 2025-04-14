@@ -6,6 +6,7 @@ export interface IEnvironment {
   id: string;
   platform: IPlatformSpecification;
   configuration: string;
+  parameters: Object;
 }
 
 export interface IPlatformSpecification {

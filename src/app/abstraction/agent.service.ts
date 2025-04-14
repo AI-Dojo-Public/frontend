@@ -50,12 +50,7 @@ export class AgentService {
    * @returns Observable of added PackageEntry array
    */
   addAgent(agent: AgentAddition): Observable<PackageEntry[]> {
-    return this.http.post<PackageEntry[]>(`${this.apiUrl}add`, agent).pipe(
-      catchError(error => {
-        console.error('Error adding agent:', error);
-        return of([]);
-      })
-    );
+    return this.http.post<PackageEntry[]>(`${this.apiUrl}add`, agent)
   }
 
   /**
@@ -64,11 +59,6 @@ export class AgentService {
    * @returns Observable of response object
    */
   removeAgent(agent: AgentRemoval): Observable<object> {
-    return this.http.post<object>(`${this.apiUrl}remove`, agent).pipe(
-      catchError(error => {
-        console.error('Error removing agent:', error);
-        return of({});
-      })
-    );
+    return this.http.post<object>(`${this.apiUrl}remove`, agent)
   }
 }

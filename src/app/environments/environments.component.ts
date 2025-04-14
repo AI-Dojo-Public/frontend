@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit, inject } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, inject, OnInit } from '@angular/core';
 import { MatTable, MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
@@ -8,7 +8,7 @@ import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MaterialModule } from "../abstraction/material-module/material.module";
 import { EnvironmentService, IEnvironmentOut } from "../abstraction/environment.service";
-import { map, Observable } from "rxjs";
+import { map } from "rxjs";
 
 @Component({
   selector: 'app-environments',
@@ -31,10 +31,11 @@ import { map, Observable } from "rxjs";
     ]),
   ],
 })
-export class EnvironmentsComponent implements AfterViewInit{
+export class EnvironmentsComponent implements OnInit, AfterViewInit{
   displayedColumns: string[] = ['id', 'state'];
   columnsToDisplayWithExpand = [...this.displayedColumns, 'actions', 'expand'];
   dataSource = new MatTableDataSource<IEnvironmentOut>();
+  emptyData = new MatTableDataSource([{}]);
   private _liveAnnouncer = inject(LiveAnnouncer);
   private environmentService = inject(EnvironmentService);
   expandedEnvironment: IEnvironmentOut | null = null;
@@ -65,10 +66,6 @@ export class EnvironmentsComponent implements AfterViewInit{
 
   toggleExpand(environment: IEnvironmentOut) {
     this.expandedEnvironment = this.isExpanded(environment) ? null : environment;
-  }
-
-  refresh() {
-    this.loadEnvironments();
   }
 
   loadEnvironments() {

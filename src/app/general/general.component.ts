@@ -1,20 +1,20 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-// import {FormsModule, FormBuilder, FormGroup, FormControl, ReactiveFormsModule} from '@angular/forms';
-import {FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {concatMap, map, Observable} from 'rxjs';
 import {
   EnvironmentService,
   IEnvironment,
-  IEnvironmentOut,
-  IPlatformSpecification
 } from "../abstraction/environment.service";
-import {AsyncPipe, KeyValuePipe, NgForOf, NgIf} from "@angular/common";
+import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
 import {ParametrizationService} from "../parametrization-form/services/parametrization.service";
 import {ParametrizationFormComponent} from "../parametrization-form/parametrization-form.component";
 import {ParameterBase} from "../parametrization-form/parametrization-form.interfaces";
 import {MaterialModule} from "../abstraction/material-module/material.module";
 import {ScenarioService} from "../abstraction/scenario.service";
+import {AlertDialog} from '../alert-dialog/alert-dialog.component';
+import {MatDialog} from "@angular/material/dialog";
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {LoadingService} from "../abstraction/loading.service";
 
 
 @Component({
@@ -27,12 +27,13 @@ import {ScenarioService} from "../abstraction/scenario.service";
     ParametrizationFormComponent,
     AsyncPipe,
     NgIf,
-    MaterialModule
+    MaterialModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './general.component.html',
   styleUrls: ['./general.component.scss']
 })
-export class GeneralComponent {
+export class GeneralComponent implements OnInit {
   environmentForm: FormGroup;
   parameters$?: Observable<ParameterBase<string>[]>;
   availableConfigurations$!: Observable<string[]>;
@@ -45,7 +46,9 @@ export class GeneralComponent {
     private scenarioService: ScenarioService,
     private parametrizationService: ParametrizationService,
     private fb: FormBuilder,
-    private service: ParametrizationService
+    private service: ParametrizationService,
+    public dialog: MatDialog,
+    private loadingService: LoadingService
   ) {
     this.environmentForm = this.fb.group({
       id: 'test_environment',
@@ -79,21 +82,40 @@ export class GeneralComponent {
 
   createEnvironment() {
     const environment: IEnvironment = this.environmentForm.value;
-    const filledParameters: string = this.parametrizationFormComponent.getParameters();
+    environment.parameters = this.parametrizationFormComponent.getParameters();
+    // This looks weird for now, maybe put it in a card with the spinning wheel
+    // if (environment.platform.type == 2) {
+    //   this.loadingService.setText("Creating emulation environment this make take a while...");
+    // }
 
+    this.loadingService.loadingOn();
     this.environmentService.createEnvironment(environment).pipe(
-      concatMap(response => {
-        console.log('Environment created:', response);
-        return this.environmentService.configureEnvironment(response.id, filledParameters);
-      }),
       concatMap(configureResponse => {
-        console.log('Environment configured:', configureResponse);
+        console.log('Environment created and configured:', configureResponse);
         return this.environmentService.initEnvironment(configureResponse.id);
       })
-    ).subscribe(initResponse => {
-      console.log('Environment initialized:', initResponse);
-    }, error => {
-      console.error('Error:', error);
+    ).subscribe({
+      next: (initResponse) => {
+        this.loadingService.loadingOff();
+        console.log('Environment initialized:', initResponse);
+        this.dialog.open(AlertDialog, {
+          data: {
+            icon: 'Check',
+            message: 'Environment created successfully'
+          }
+        });
+      },
+      error: (error) => {
+        this.loadingService.loadingOff();
+        console.error('Error:', error);
+        this.dialog.open(AlertDialog, {
+          data: {
+            icon: 'Error',
+            message: 'Environment creation failed',
+            buttonText: 'Uh oh!'
+          }
+        });
+      }
     });
   }
 }

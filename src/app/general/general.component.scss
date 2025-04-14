@@ -27,13 +27,6 @@ mat-form-field {
   margin-bottom: 20px;
 }
 
-mat-label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #555;
-}
-
 button {
   display: block;
   background-color: #1976d2;
@@ -50,3 +43,4 @@ button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
+
