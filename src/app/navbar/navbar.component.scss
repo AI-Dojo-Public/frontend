@@ -21,11 +21,11 @@ mat-toolbar {
     display: flex;
     gap: 0.5rem;
     margin-left: var(--spacing-xs);
-    
-    
+
+
     mat-icon {
-      font-size: var(--font-size-l); 
-      color: var(--color-text); 
+      font-size: var(--font-size-l);
+      color: var(--color-text);
       height: 100%;
       width: 100%;
       margin: 0;
@@ -45,15 +45,15 @@ mat-toolbar {
       padding-top: 0.3rem;
       padding-left: 0.3rem;
     }
-  
+
     &.highlight .navbar-text-between {
-      animation: slide-out 1s forwards 0.5s; 
+      animation: slide-out 1s forwards 0.5s;
       color: white;
     }
-  
+
     &.highlight mat-icon {
-      animation: pulse 1s ease; 
-      color: var(--color-highlight); 
+      animation: pulse 1s ease;
+      color: var(--color-highlight);
     }
   }
 
@@ -62,7 +62,7 @@ mat-toolbar {
       transform: scale(1);
     }
     50% {
-      transform: scale(1.5); 
+      transform: scale(1.5);
     }
     100% {
       transform: scale(1);
@@ -77,7 +77,7 @@ mat-toolbar {
       transform: translateX(0); /* Slide out to the right */
     }
   }
-  
+
 
   .navbar-right-content {
     display: flex;
@@ -91,7 +91,7 @@ mat-toolbar {
     button[mat-icon-button] {
       padding: 0;
       margin-right: var(--spacing-xs);
-      color: var(--color-text); 
+      color: var(--color-text);
 
       // &:focus {
       //   color: var(--color-highlight)
@@ -99,7 +99,7 @@ mat-toolbar {
     }
 
     mat-icon {
-      font-size: var(--font-size-l); 
+      font-size: var(--font-size-l);
       height: var(--font-size-l);
       width: var(--font-size-l);
       transform: rotate(180deg);
@@ -111,9 +111,9 @@ mat-toolbar {
   }
 
   .navbar-buttons-container {
-    position: absolute; 
-    left: 50%; 
-    transform: translateX(-50%); 
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 
     button[mat-stroked-button] {
       width: 100%;
@@ -193,7 +193,7 @@ mat-toolbar {
   color: var(--color-text);
   padding: var(--spacing-xs);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000; 
+  z-index: 1000;
 
   ul {
     list-style: none;
@@ -212,7 +212,7 @@ mat-toolbar {
       &:active {
         color: var(--color-highlight);
       }
-      
+
     }
   }
 }

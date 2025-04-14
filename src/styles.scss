@@ -241,6 +241,7 @@ $sentinel-theme: mat.define-theme((
 body {
   margin: 0;
   min-width: 15rem;
+  background-color: var(--color-secondary);
 }
 
 * {

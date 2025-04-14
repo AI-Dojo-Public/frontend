@@ -5,6 +5,8 @@ import {MaterialModule} from "../abstraction/material-module/material.module";
 import {AgentService, PackageEntry, AgentAddition, AgentRemoval} from '../abstraction/agent.service';
 import {map} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
+import {AlertDialog} from "../alert-dialog/alert-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 
 
@@ -24,9 +26,8 @@ export class ConfAgentsComponent {
   installForm: FormGroup;
   dataSource = new MatTableDataSource<PackageEntry>(); // Material Table DataSource
   displayedColumns: string[] = ['module_name', 'package_name', 'package_version', 'actions'];
-  message: string = '';
 
-  constructor(private fb: FormBuilder, private agentService: AgentService) {
+  constructor(private fb: FormBuilder, private agentService: AgentService, public dialog: MatDialog) {
     this.installForm = this.fb.group({
       method: [''],
       pathOrUrl: [''],
@@ -62,12 +63,26 @@ export class ConfAgentsComponent {
     this.agentService.addAgent(agent).subscribe({
 
       next: () => {
-        this.message = `Agent installed successfully!`;
+        this.dialog.open(AlertDialog, {
+          data: {
+            icon: 'Check',
+            message: 'Agent installed successfully!'
+          }
+        });
         this.loadAgents();
       },
       error: (error) => {
         console.error('Error installing agent:', error);
-        this.message = 'Failed to install agent.';
+
+        // Extract detail from error response
+        let errorMessage = 'Failed to add agent';
+        if (error.error?.detail) {
+          errorMessage = error.error.detail;
+        }
+
+        this.dialog.open(AlertDialog, {
+          data: { icon: 'Error', message: errorMessage }
+        });
       }
     });
   }
@@ -80,12 +95,22 @@ export class ConfAgentsComponent {
 
     this.agentService.removeAgent(agent).subscribe({
       next: () => {
-        this.message = `Agent removed successfully!`;
+        this.dialog.open(AlertDialog, {
+          data: {
+            icon: 'Check',
+            message: 'Agent removed successfully!'
+          }
+        });
         this.loadAgents(); // Refresh the observable stream
       },
       error: (error) => {
         console.error('Error removing agent:', error);
-        this.message = 'Failed to remove agent.';
+        this.dialog.open(AlertDialog, {
+          data: {
+            icon: 'Error',
+            message: 'Failed to remove agent'
+          }
+        });
       }
     });
   }

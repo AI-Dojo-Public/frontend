@@ -7,7 +7,8 @@
 
 <div class="table-container">
   <table mat-table
-         [dataSource]="dataSource" multiTemplateDataRows
+         [dataSource]="dataSource.data.length > 0 && dataSource.filteredData.length > 0 ? dataSource : emptyData"
+         multiTemplateDataRows
          class="mat-elevation-z8 centered-table">
     @for (column of displayedColumns; track column) {
       <ng-container matColumnDef="{{column}}">
@@ -54,10 +55,18 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="empty-row">
+      <td mat-cell *matCellDef="let row" [attr.colspan]="displayedColumns.length">
+        No Data
+      </td>
+    </ng-container>
+
+
+    <!-- Header Row -->
     <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-    <tr mat-row *matRowDef="let environment; columns: columnsToDisplayWithExpand;"
+    <tr mat-row *matRowDef="let row; columns: dataSource.data.length > 0 && dataSource.filteredData.length > 0 ? columnsToDisplayWithExpand : ['empty-row'];"
         class="environment-row"
-        [class.expanded-row]="isExpanded(environment)">
+        [class.expanded-row]="isExpanded(row)">
     </tr>
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
   </table>

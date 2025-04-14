@@ -1,16 +1,16 @@
 <div class="form-container">
-  <h2>Create Environment</h2>
+  <h3>Create Environment</h3>
   <form [formGroup]="environmentForm" (ngSubmit)="createEnvironment()">
     <div class="form-group">
-      <mat-label>Environment ID</mat-label>
-      <mat-form-field floatLabel="auto">
-        <input matInput type="text" id="id" formControlName="id" required>
+      <mat-form-field appearance="fill" floatLabel="auto">
+        <mat-label>Environment ID</mat-label>
+        <input matInput formControlName="id" required>
       </mat-form-field>
     </div>
 
     <div class="form-group">
-      <mat-label>Configuration</mat-label>
-      <mat-form-field floatLabel="auto">
+      <mat-form-field appearance="fill" floatLabel="auto">
+        <mat-label>Configuration</mat-label>
         <mat-select id="configuration" formControlName="configuration" required>
           <mat-option *ngFor="let config of availableConfigurations$ | async" [value]="config">{{ config }}</mat-option>
         </mat-select>
@@ -18,8 +18,8 @@
     </div>
 
     <div formGroupName="platform" class="form-group">
-      <mat-label>Platform Type</mat-label>
-      <mat-form-field floatLabel="auto">
+      <mat-form-field appearance="fill" floatLabel="auto">
+        <mat-label>Platform Type</mat-label>
         <mat-select id="type" formControlName="type" required>
           <mat-option [value]="1">Simulation</mat-option>
           <mat-option [value]="2">Emulation</mat-option>
@@ -28,15 +28,21 @@
     </div>
 
     <div formGroupName="platform" class="form-group">
-      <mat-label>Provider</mat-label>
-      <mat-form-field floatLabel="auto">
+      <mat-form-field appearance="fill" floatLabel="auto">
+        <mat-label>Provider</mat-label>
         <input matInput type="text" id="provider" formControlName="provider" required>
       </mat-form-field>
     </div>
 
-    <div *ngIf="parameters$">
-      <h2>Customizable configuration parameters</h2>
-      <app-parametrization-form [parameters]="parameters$ | async"></app-parametrization-form>
+    <h4>Configuration parameters</h4>
+    <div *ngIf="(parameters$ | async) as parameters">
+      <ng-container *ngIf="parameters && parameters.length > 0; else noParams">
+        <app-parametrization-form [parameters]="parameters"></app-parametrization-form>
+      </ng-container>
+      <ng-template #noParams>
+        <p>No parameters found</p>
+        <app-parametrization-form [parameters]="[]"></app-parametrization-form>
+      </ng-template>
     </div>
 
     <div class="form-group button-container">
